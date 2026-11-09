@@ -17,10 +17,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 @Entity
 @Table(name = "ordem_compra")
-public class OrdemDeCompra {
+public class OrdemDeCompra extends AbstractAggregateRoot<OrdemDeCompra> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -102,6 +103,7 @@ public class OrdemDeCompra {
                     + " excede a alçada do aprovador (" + alcadaDoAprovador.valor() + ").");
         }
         this.status = StatusOrdem.APROVADA;
+        registerEvent(new OrdemAprovada(id, fornecedorId, total));
     }
 
     public void receber() {

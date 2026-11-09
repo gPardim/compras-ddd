@@ -1,7 +1,13 @@
 package br.edu.pucgoias.compras.repositorio;
 
 import br.edu.pucgoias.compras.dominio.OrdemDeCompra;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.Repository;
 
-public interface OrdemDeCompraRepository extends JpaRepository<OrdemDeCompra, Long> {
+import java.util.Optional;
+
+public interface OrdemDeCompraRepository extends Repository<OrdemDeCompra, Long> {
+
+    OrdemDeCompra save(OrdemDeCompra ordem);
+
+    Optional<OrdemDeCompra> findById(Long id);
 }

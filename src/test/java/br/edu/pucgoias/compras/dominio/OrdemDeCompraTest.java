@@ -4,23 +4,33 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 class OrdemDeCompraTest {
 
     @Test
-    @Disabled("A escrever pelo estudante")
     @DisplayName("D1. Dinheiro: igualdade por valor e aritmética imutável")
     void d01_dinheiro() {
-        // Verificar que Dinheiro.de("10.5") é igual a Dinheiro.de("10.50");
-        // que somar devolve um novo objeto e não altera o original;
-        // e que 10.00 multiplicado por Quantidade(3) resulta em 30.00.
+        assertThat(Dinheiro.de("10.5")).isEqualTo(Dinheiro.de("10.50"));
+
+        Dinheiro original = Dinheiro.de("10.00");
+        Dinheiro soma = original.somar(Dinheiro.de("5.00"));
+        assertThat(soma).isEqualTo(Dinheiro.de("15.00"));
+        assertThat(original).isEqualTo(Dinheiro.de("10.00"));
+        assertThat(soma).isNotSameAs(original);
+
+        assertThat(Dinheiro.de("10.00").multiplicar(new Quantidade(3)))
+                .isEqualTo(Dinheiro.de("30.00"));
     }
 
     @Test
-    @Disabled("A escrever pelo estudante")
     @DisplayName("D2. Quantidade não admite valor nulo ou negativo")
     void d02_quantidade() {
-        // Verificar que new Quantidade(0) lança RegraNegocioException
-        // e que Quantidade(2) somada a Quantidade(3) é igual a Quantidade(5).
+        assertThatThrownBy(() -> new Quantidade(0)).isInstanceOf(RegraNegocioException.class);
+        assertThatThrownBy(() -> new Quantidade(-1)).isInstanceOf(RegraNegocioException.class);
+
+        assertThat(new Quantidade(2).somar(new Quantidade(3))).isEqualTo(new Quantidade(5));
     }
 
     @Test
